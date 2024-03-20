@@ -73,14 +73,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
-  bloc:
-    dependency: transitive
-    description:
-      name: bloc
-      sha256: f53a110e3b48dcd78136c10daa5d51512443cea5e1348c9d80a320095fa2db9e
-      url: "https://pub.dev"
-    source: hosted
-    version: "8.1.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -169,43 +161,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.16.0"
-  flame_audio:
-    dependency: "direct main"
-    description:
-      name: flame_audio
-      sha256: "0551a01a0beb10bb54dc014c51b4b8ccd5ff69c7535fd60e7ce93fab00cdf5f4"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.10.0"
-  flame_bloc:
-    dependency: "direct main"
-    description:
-      name: flame_bloc
-      sha256: "0681f60e18c7370e8f363194e222912bb17e507b1fc5ab354677c548cf0c0c81"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.11.0"
-  flame_forge2d:
-    dependency: "direct main"
-    description:
-      name: flame_forge2d
-      sha256: "8cdce7f28bd101bd4ca36e0ea5b4f83c56e6d30b795ceac3bcb30fe4e84840bc"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.17.0"
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_bloc:
-    dependency: "direct main"
-    description:
-      name: flutter_bloc
-      sha256: "87325da1ac757fcc4813e6b34ed5dd61169973871fdf181d6c2109dd6935ece1"
-      url: "https://pub.dev"
-    source: hosted
-    version: "8.1.4"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -240,14 +200,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.2.4"
-  forge2d:
-    dependency: transitive
-    description:
-      name: forge2d
-      sha256: a16bee7a5bdf3538ef4a51ae9b6befb39872d3518b653fc7b8756ef49f7fcf96
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.12.2"
   google_fonts:
     dependency: "direct main"
     description:
@@ -336,14 +288,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
-  nested:
-    dependency: transitive
-    description:
-      name: nested
-      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   ordered_set:
     dependency: transitive
     description:
@@ -440,14 +384,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
-  provider:
-    dependency: transitive
-    description:
-      name: provider
-      sha256: c8a055ee5ce3fd98d6fc872478b03823ffdb448699c6ebdbbc71d59b596fd48c
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.1.2"
   sky_engine:
     dependency: transitive
     description: flutter

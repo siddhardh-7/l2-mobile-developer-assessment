@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'ballon.dart';
+import 'balloon.dart';
 
 class BubbleScreen extends StatefulWidget {
   const BubbleScreen({super.key});
@@ -12,7 +13,7 @@ class BubbleScreen extends StatefulWidget {
 
 class _BubbleScreenState extends State<BubbleScreen>
     with WidgetsBindingObserver {
-  List<Color> colors_list = [
+  var colorsList = <Color>[
     Colors.red,
     Colors.blue,
     Colors.green,
@@ -24,7 +25,9 @@ class _BubbleScreenState extends State<BubbleScreen>
     Colors.brown,
     Colors.grey,
   ];
+  int totalBolloons = 0;
   late Timer timer;
+
   // late Timer colorTimer;
   List<Bubble> bubbles = [];
   Random random = Random();
@@ -59,30 +62,31 @@ class _BubbleScreenState extends State<BubbleScreen>
     }
   }
 
+  int _start = 120;
+  String _remainingTime = '2:00';
+
   void startGame() {
-    timer = Timer.periodic(const Duration(milliseconds: 600), (timer) {
-      if (timer.isActive) {
-        generateBubble();
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_start == 0) {
+        timer.cancel();
+        endGame();
       } else {
-        timer.cancel();
-      }
-    });
-
-
-    Future.delayed(const Duration(seconds: 60), () {
-      if (timer.isActive) {
-        timer.cancel();
-        Future.delayed(const Duration(seconds: 1), endGame);
+        _start--;
+        Duration remainingTime = Duration(seconds: _start);
+        _remainingTime =
+            '${remainingTime.inMinutes}:${(remainingTime.inSeconds - remainingTime.inMinutes * 60).toString().padLeft(2, '0')}';
+        // print('Remaining time: $_remainingTime, Score: $score, Total Ballons: ${bubbles.length}');
+        generateBubble();
       }
     });
   }
 
   void generateBubble() {
-    double left = random.nextDouble() * (size.width-150);
+    double left = random.nextDouble() * (size.width - 150);
     setState(() {
       bubbles.add(Bubble(
         left: left,
-        color: colors_list[random.nextInt(colors_list.length)],
+        color: colorsList[random.nextInt(colorsList.length)],
         pop: pop,
         // selectColor: color,
       ));
@@ -90,19 +94,21 @@ class _BubbleScreenState extends State<BubbleScreen>
   }
 
   void pop() {
-      setState(() {
-        score++;
-      });
+    setState(() {
+      score++;
+    });
   }
 
   void endGame() {
     setState(() {
       start = true;
+      totalBolloons = bubbles.length;
       bubbles.clear();
     });
   }
 
   void restartGame() {
+    totalBolloons = bubbles.length;
     bubbles.clear();
     score = 0;
     start = false;
@@ -119,28 +125,104 @@ class _BubbleScreenState extends State<BubbleScreen>
           ? Stack(children: [
               for (int i = 0; i < bubbles.length; i++) bubbles[i],
             ])
-          : Center(
-              child: Transform.scale(
-                  scale: 1.5,
+          : Container(
+        margin: EdgeInsets.symmetric(horizontal: 50, vertical: 220),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.amber,
+        ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children:[
+                Text(
+                  'Score Board',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,),
+                ),
+                Divider(
+                  thickness:2,
+                  color: Colors.white,
+                ),
+                Text(
+                  'Balloons Popped: $score',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,),
+                ),
+                Text(
+                  'Balloons Missed: ${totalBolloons - score}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                Text(
+                  'You Score',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                  ),
                   child: Text(
-                    'You Scored \n $score',
+                    '${score*2 - (totalBolloons-score)}',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
-                  )),
+                  ),
+                ),
+              ],
             ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ElevatedButton(
-            onPressed: () {
-              if (start) {
-                restartGame();
-              }
-            },
-            child: Text(start ? 'Restart' : 'Your Score: $score')),
+          ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        margin: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color.fromRGBO(255,94,247,1), Color.fromRGBO(2,245,255,1)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(50),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 5,
+              offset: Offset(0, 3),
+            )
+          ],
+        ),
+        child: TextButton(
+          onPressed: () {
+            if (start) {
+              restartGame();
+            }
+          },
+          child: Text(
+            start ? 'Restart' : 'Remaining Time: $_remainingTime',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+            ),
+          ),
+        ),
       ),
     );
   }
